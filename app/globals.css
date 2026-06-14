@@ -1,0 +1,108 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --color-gold: #F4D03F;
+  --color-black: #1A1A1A;
+  --color-white: #FFFFFF;
+  --color-accent: #D4AF37;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: linear-gradient(135deg, #000000 0%, #1A1A1A 50%, #000000 100%);
+  color: #E0E0E0;
+  min-height: 100vh;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+::selection {
+  background-color: #F4D03F;
+  color: #000000;
+}
+
+/* Premium typography system */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+  color: #FFFFFF;
+  letter-spacing: -0.02em;
+}
+
+h1 {
+  font-size: clamp(2rem, 5vw, 7rem);
+  font-weight: 900;
+}
+
+h2 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+}
+
+h3 {
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  font-weight: 700;
+}
+
+p {
+  color: #C8C8C8;
+  line-height: 1.6;
+}
+
+/* Gold accent text */
+.text-gold {
+  color: #F4D03F;
+}
+
+.text-gold-accent {
+  color: #D4AF37;
+}
+
+/* Glassmorphism effect */
+.glass-effect {
+  backdrop-filter: blur(12px);
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Premium border */
+.border-premium {
+  border: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(to right, #FBC870, #F4D03F, #D4AF37);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+/* Custom animations */
+@keyframes shimmer {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 10px rgba(244, 208, 63, 0.2); }
+  50% { box-shadow: 0 0 20px rgba(244, 208, 63, 0.4); }
+}
+
+/* Utility animations */
+.animate-shimmer {
+  animation: shimmer 2s infinite;
+}
+
+.animate-glow {
+  animation: glow 2s ease-in-out infinite;
+}
