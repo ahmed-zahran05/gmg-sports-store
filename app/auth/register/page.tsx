@@ -3,11 +3,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { Eye, EyeOff, Check } from "lucide-react";
+import { Eye, EyeOff, Check, Mail } from "lucide-react";
+import { supabase } from "@/lib/supabase";
 
 export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [registered, setRegistered] = useState(false);
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -33,9 +36,26 @@ export default function RegisterPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    await new Promise((r) => setTimeout(r, 1500));
-    setIsLoading(false);
-    window.location.href = "/";
+    setError("");
+
+    const { error } = await supabase.auth.signUp({
+      email: formData.email,
+      password: formData.password,
+      options: {
+        data: {
+          first_name: formData.firstName,
+          last_name: formData.lastName,
+        },
+      },
+    });
+
+    if (error) {
+      setError(error.message);
+      setIsLoading(false);
+    } else {
+      setIsLoading(false);
+      setRegistered(true);
+    }
   };
 
   const inputClass = "w-full px-4 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder:text-white/30 focus:outline-none focus:border-gmg-gold-500 transition-colors";
@@ -91,10 +111,38 @@ export default function RegisterPage() {
           <span className="font-black tracking-widest text-white">GMG <span className="text-gmg-gold-500">SPORTS</span></span>
         </Link>
 
+        {registered ? (
+          <div className="text-center space-y-6 py-8">
+            <div className="w-16 h-16 rounded-full bg-gmg-gold-500/10 border border-gmg-gold-500/30 flex items-center justify-center mx-auto">
+              <Mail className="w-8 h-8 text-gmg-gold-500" />
+            </div>
+            <div>
+              <h1 className="text-2xl font-black text-white mb-2">Check Your Email</h1>
+              <p className="text-white/50 text-sm leading-relaxed">
+                We sent a confirmation link to{" "}
+                <span className="text-gmg-gold-400 font-semibold">{formData.email}</span>.
+                Click it to activate your account.
+              </p>
+            </div>
+            <Link
+              href="/auth/login"
+              className="flex items-center justify-center gap-2 w-full py-3.5 rounded-full border border-gmg-gold-600/20 text-white/60 text-sm font-bold hover:border-gmg-gold-500 hover:text-white transition-colors"
+            >
+              Back to Login
+            </Link>
+          </div>
+        ) : (
+          <>
         <div className="space-y-2 mb-8">
           <h1 className="text-3xl font-black text-white">Create Account</h1>
           <p className="text-white/50">Join over 50,000 athletes already training with GMG.</p>
         </div>
+
+        {error && (
+          <div className="mb-4 px-4 py-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
+            {error}
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
@@ -173,6 +221,8 @@ export default function RegisterPage() {
             Sign in
           </Link>
         </p>
+          </>
+        )}
       </div>
     </main>
   );

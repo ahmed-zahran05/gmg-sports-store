@@ -3,9 +3,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { ShoppingBag, Heart, Search, Menu, X, ChevronDown } from "lucide-react";
+import { ShoppingBag, Heart, Search, Menu, X, ChevronDown, User } from "lucide-react";
 import { useCartStore } from "@/stores/cartStore";
 import { useWishlistStore } from "@/stores/wishlistStore";
+import { useAuth } from "@/context/auth-context";
 
 const navLinks = [
   {
@@ -33,6 +34,7 @@ export function SiteHeader() {
 
   const cartItems = useCartStore((s) => s.items);
   const wishlistIds = useWishlistStore((s) => s.productIds);
+  const { user, signOut } = useAuth();
 
   const cartCount = cartItems.reduce((n, i) => n + i.quantity, 0);
   const wishlistCount = wishlistIds.length;
@@ -163,18 +165,38 @@ export function SiteHeader() {
 
             {/* Auth Links */}
             <div className="hidden sm:flex items-center gap-2 ml-2 pl-2 border-l border-white/10">
-              <Link
-                href="/auth/login"
-                className="text-sm font-semibold text-white/70 hover:text-gmg-gold-400 transition-colors px-2 py-1"
-              >
-                Sign in
-              </Link>
-              <Link
-                href="/auth/register"
-                className="text-sm font-bold bg-gmg-gold-500 text-gmg-black-900 px-4 py-2 rounded-full hover:bg-gmg-gold-400 transition-colors"
-              >
-                Join
-              </Link>
+              {user ? (
+                <>
+                  <Link
+                    href="/account"
+                    className="flex items-center gap-2 text-sm font-semibold text-white/70 hover:text-gmg-gold-400 transition-colors px-2 py-1"
+                  >
+                    <User className="w-4 h-4" />
+                    {user.user_metadata?.first_name ?? user.email?.split("@")[0]}
+                  </Link>
+                  <button
+                    onClick={signOut}
+                    className="text-sm font-bold border border-gmg-gold-600/30 text-gmg-gold-500 px-4 py-2 rounded-full hover:bg-gmg-gold-500/10 transition-colors"
+                  >
+                    Sign Out
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link
+                    href="/auth/login"
+                    className="text-sm font-semibold text-white/70 hover:text-gmg-gold-400 transition-colors px-2 py-1"
+                  >
+                    Sign in
+                  </Link>
+                  <Link
+                    href="/auth/register"
+                    className="text-sm font-bold bg-gmg-gold-500 text-gmg-black-900 px-4 py-2 rounded-full hover:bg-gmg-gold-400 transition-colors"
+                  >
+                    Join
+                  </Link>
+                </>
+              )}
             </div>
 
             {/* Mobile menu toggle */}
@@ -271,20 +293,34 @@ export function SiteHeader() {
 
             {/* Bottom auth */}
             <div className="px-6 py-6 border-t border-gmg-gold-600/20 space-y-3">
-              <Link
-                href="/auth/login"
-                onClick={() => setMobileOpen(false)}
-                className="flex items-center justify-center w-full py-3 rounded-full border-2 border-gmg-gold-500 text-gmg-gold-400 font-bold text-sm hover:bg-gmg-gold-500/10 transition-colors"
-              >
-                Sign In
-              </Link>
-              <Link
-                href="/auth/register"
-                onClick={() => setMobileOpen(false)}
-                className="flex items-center justify-center w-full py-3 rounded-full bg-gmg-gold-500 text-gmg-black-900 font-bold text-sm hover:bg-gmg-gold-400 transition-colors"
-              >
-                Create Account
-              </Link>
+              {user ? (
+                <>
+                  <p className="text-xs text-white/30 text-center truncate">{user.email}</p>
+                  <button
+                    onClick={signOut}
+                    className="flex items-center justify-center w-full py-3 rounded-full border-2 border-gmg-gold-500 text-gmg-gold-400 font-bold text-sm hover:bg-gmg-gold-500/10 transition-colors"
+                  >
+                    Sign Out
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link
+                    href="/auth/login"
+                    onClick={() => setMobileOpen(false)}
+                    className="flex items-center justify-center w-full py-3 rounded-full border-2 border-gmg-gold-500 text-gmg-gold-400 font-bold text-sm hover:bg-gmg-gold-500/10 transition-colors"
+                  >
+                    Sign In
+                  </Link>
+                  <Link
+                    href="/auth/register"
+                    onClick={() => setMobileOpen(false)}
+                    className="flex items-center justify-center w-full py-3 rounded-full bg-gmg-gold-500 text-gmg-black-900 font-bold text-sm hover:bg-gmg-gold-400 transition-colors"
+                  >
+                    Create Account
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         </div>

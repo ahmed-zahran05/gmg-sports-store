@@ -4,18 +4,30 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
+import { supabase } from "@/lib/supabase";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
   const [formData, setFormData] = useState({ email: "", password: "", remember: false });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    await new Promise((r) => setTimeout(r, 1500));
-    setIsLoading(false);
-    window.location.href = "/";
+    setError("");
+
+    const { error } = await supabase.auth.signInWithPassword({
+      email: formData.email,
+      password: formData.password,
+    });
+
+    if (error) {
+      setError(error.message);
+      setIsLoading(false);
+    } else {
+      window.location.href = "/";
+    }
   };
 
   const inputClass = "w-full px-4 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder:text-white/30 focus:outline-none focus:border-gmg-gold-500 transition-colors";
@@ -36,6 +48,12 @@ export default function LoginPage() {
           <h1 className="text-3xl font-black text-white">Welcome back</h1>
           <p className="text-white/50">Sign in to access your account and order history.</p>
         </div>
+
+        {error && (
+          <div className="mb-4 px-4 py-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
+            {error}
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
