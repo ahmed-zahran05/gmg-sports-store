@@ -1,91 +1,59 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
-  content: ["./app/**/*.{js,ts,jsx,tsx}", "./components/**/*.{js,ts,jsx,tsx}", "./lib/**/*.{js,ts,jsx,tsx}"] ,
+  content: [
+    "./app/**/*.{js,ts,jsx,tsx}",
+    "./components/**/*.{js,ts,jsx,tsx}",
+    "./context/**/*.{js,ts,jsx,tsx}",
+    "./lib/**/*.{js,ts,jsx,tsx}",
+  ],
   theme: {
     extend: {
       colors: {
-        // GMG Sports Premium Brand Palette
-        gmg: {
-          // Gold/Yellow - Primary accent
-          gold: {
-            50: "#FFFBF0",
-            100: "#FEF5E0",
-            200: "#FDE8B8",
-            300: "#FCDAA0",
-            400: "#FBC870",
-            500: "#F4D03F",
-            600: "#D4AF37",
-            700: "#B8941F",
-            800: "#9C7A18",
-            900: "#6B5310"
-          },
-          // Black - Primary brand color
-          black: {
-            50: "#F8F8F8",
-            100: "#F0F0F0",
-            200: "#E0E0E0",
-            300: "#C8C8C8",
-            400: "#8B8B8B",
-            500: "#3C3C3C",
-            600: "#262626",
-            700: "#1A1A1A",
-            800: "#0F0F0F",
-            900: "#000000"
-          },
-          // White - Clean background
-          white: {
-            50: "#FFFFFF",
-            100: "#FAFAFA",
-            200: "#F5F5F5",
-            300: "#EEEEEE",
-            400: "#E8E8E8"
-          }
+        yellow: {
+          gmg: "#F5C400",
+          light: "#FFF9D0",
+          dark: "#D4A900",
         },
-        // Semantic colors
-        brand: {
-          primary: "#F4D03F",
-          secondary: "#1A1A1A",
-          accent: "#D4AF37",
-          light: "#F5F5F5",
-          dark: "#000000"
-        }
+        gray: {
+          50: "#F8F8F8",
+          100: "#EAEAEA",
+          200: "#DDDDDD",
+          300: "#CCCCCC",
+          400: "#999999",
+          500: "#666666",
+          600: "#444444",
+          700: "#333333",
+          800: "#222222",
+          900: "#111111",
+        },
       },
-      typography: {
-        DEFAULT: {
-          css: {
-            color: "#1A1A1A",
-            a: {
-              color: "#D4AF37",
-              "&:hover": {
-                color: "#F4D03F"
-              }
-            }
-          }
-        }
+      fontFamily: {
+        sans: [
+          "Inter",
+          "-apple-system",
+          "BlinkMacSystemFont",
+          "Segoe UI",
+          "sans-serif",
+        ],
       },
       boxShadow: {
-        premium: "0 20px 60px rgba(0, 0, 0, 0.15)",
-        elevated: "0 10px 40px rgba(212, 175, 55, 0.1)",
-        card: "0 4px 20px rgba(0, 0, 0, 0.08)"
+        card: "0 2px 16px rgba(0,0,0,0.08)",
+        "card-hover": "0 8px 32px rgba(0,0,0,0.12)",
+        soft: "0 1px 4px rgba(0,0,0,0.06)",
       },
       animation: {
-        shimmer: "shimmer 2s infinite",
-        glow: "glow 2s ease-in-out infinite"
+        "marquee": "marquee 30s linear infinite",
       },
       keyframes: {
-        shimmer: {
-          "0%, 100%": { opacity: "0.4" },
-          "50%": { opacity: "1" }
+        marquee: {
+          "0%": { transform: "translateX(0%)" },
+          "100%": { transform: "translateX(-50%)" },
         },
-        glow: {
-          "0%, 100%": { "box-shadow": "0 0 10px rgba(244, 208, 63, 0.2)" },
-          "50%": { "box-shadow": "0 0 20px rgba(244, 208, 63, 0.4)" }
-        }
-      }
-    }
+      },
+    },
   },
-  plugins: []
+  plugins: [],
 };
 
 export default config;

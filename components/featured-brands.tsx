@@ -13,7 +13,7 @@ export function FeaturedBrands() {
               key={brand.name}
               className="text-xl sm:text-2xl font-black tracking-wider text-white/20 hover:text-white/50 transition-colors duration-200 cursor-default select-none"
             >
-              {brand.logo}
+              {brand.displayName}
             </div>
           ))}
         </div>

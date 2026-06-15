@@ -1,25 +1,19 @@
-import { PremiumHero } from "@/components/premium-hero";
-import { FeaturedBrands } from "@/components/featured-brands";
-import { FeaturedCollections } from "@/components/featured-collections";
-import { FeaturedProducts } from "@/components/featured-products";
-import { BestSellers } from "@/components/best-sellers";
-import { NewArrivals } from "@/components/new-arrivals";
-import { WhyChooseGMG } from "@/components/why-choose-gmg";
-import { Testimonials } from "@/components/testimonials";
-import { Newsletter } from "@/components/newsletter";
+import { HomeHero } from "@/components/home-hero";
+import { HomeCategories } from "@/components/home-categories";
+import { HomeFeatured } from "@/components/home-featured";
+import { HomeBrands } from "@/components/home-brands";
+import { HomeWhy } from "@/components/home-why";
+import { HomeNewsletter } from "@/components/home-newsletter";
 
 export default function HomePage() {
   return (
     <main>
-      <PremiumHero />
-      <FeaturedBrands />
-      <FeaturedCollections />
-      <FeaturedProducts />
-      <BestSellers />
-      <NewArrivals />
-      <WhyChooseGMG />
-      <Testimonials />
-      <Newsletter />
+      <HomeHero />
+      <HomeCategories />
+      <HomeFeatured />
+      <HomeBrands />
+      <HomeWhy />
+      <HomeNewsletter />
     </main>
   );
 }

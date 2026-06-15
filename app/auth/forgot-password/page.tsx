@@ -5,8 +5,10 @@ import Link from "next/link";
 import { useState } from "react";
 import { ArrowLeft, Mail } from "lucide-react";
 import { supabase } from "@/lib/supabase";
+import { useI18n } from "@/context/i18n-context";
 
 export default function ForgotPasswordPage() {
+  const { t } = useI18n();
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -31,62 +33,64 @@ export default function ForgotPasswordPage() {
   };
 
   return (
-    <main className="min-h-screen bg-black flex items-center justify-center px-4 sm:px-6">
+    <main className="min-h-screen bg-white flex items-center justify-center px-4 sm:px-6">
       <div className="w-full max-w-md">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-3 mb-12 justify-center">
-          <div className="relative w-10 h-10">
+        <Link href="/" className="flex items-center gap-2.5 mb-12 justify-center">
+          <div className="relative w-9 h-9">
             <Image src="/gmg-logo.png" alt="GMG Sports" fill className="object-contain" />
           </div>
-          <span className="font-black tracking-widest text-white">GMG <span className="text-gmg-gold-500">SPORTS</span></span>
+          <span className="font-black text-gray-900 text-lg">
+            GMG <span className="text-[#F5C400]">SPORTS</span>
+          </span>
         </Link>
 
-        <div className="p-8 rounded-2xl bg-gmg-black-900 border border-gmg-gold-600/20">
+        <div className="p-8 rounded-2xl bg-white border border-gray-100 shadow-card">
           {submitted ? (
             <div className="text-center space-y-6">
-              <div className="w-16 h-16 rounded-full bg-gmg-gold-500/10 border border-gmg-gold-500/30 flex items-center justify-center mx-auto">
-                <Mail className="w-8 h-8 text-gmg-gold-500" />
+              <div className="w-16 h-16 rounded-full bg-[#FFF9D0] border border-[#F5C400]/30 flex items-center justify-center mx-auto">
+                <Mail className="w-8 h-8 text-[#D4A900]" aria-hidden="true" />
               </div>
               <div>
-                <h1 className="text-2xl font-black text-white mb-2">Check Your Email</h1>
-                <p className="text-white/50 text-sm leading-relaxed">
-                  We sent a password reset link to{" "}
-                  <span className="text-gmg-gold-400 font-semibold">{email}</span>.
-                  Check your inbox and click the link to reset your password.
+                <h1 className="text-2xl font-black text-gray-900 mb-2">{t("auth.checkEmailTitle")}</h1>
+                <p className="text-gray-500 text-sm leading-relaxed">
+                  {t("auth.checkEmailSub")}{" "}
+                  <span className="text-[#D4A900] font-semibold">{email}</span>.{" "}
+                  {t("auth.checkEmailSub2")}
                 </p>
               </div>
-              <p className="text-xs text-white/30">
-                Didn&apos;t receive it? Check your spam folder or{" "}
-                <button onClick={() => setSubmitted(false)} className="text-gmg-gold-500 hover:text-gmg-gold-400 underline">
-                  try again
+              <p className="text-xs text-gray-400">
+                {t("auth.didntReceive")}{" "}
+                <button onClick={() => setSubmitted(false)} className="text-[#D4A900] hover:text-[#F5C400] underline">
+                  {t("auth.tryAgain")}
                 </button>
               </p>
               <Link
                 href="/auth/login"
-                className="flex items-center justify-center gap-2 w-full py-3.5 rounded-full border border-gmg-gold-600/20 text-white/60 text-sm font-bold hover:border-gmg-gold-500 hover:text-white transition-colors"
+                className="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl border-2 border-gray-200 text-gray-700 text-sm font-bold hover:border-gray-400 transition-colors"
               >
-                <ArrowLeft className="w-4 h-4" />
-                Back to Login
+                <ArrowLeft className="w-4 h-4 rtl-flip" aria-hidden="true" />
+                {t("auth.backToLogin")}
               </Link>
             </div>
           ) : (
             <>
               <div className="mb-8">
-                <h1 className="text-2xl font-black text-white mb-2">Reset Password</h1>
-                <p className="text-white/50 text-sm leading-relaxed">
-                  Enter the email address associated with your account and we&apos;ll send you a link to reset your password.
-                </p>
+                <h1 className="text-2xl font-black text-gray-900 mb-2">{t("auth.forgotTitle")}</h1>
+                <p className="text-gray-500 text-sm leading-relaxed">{t("auth.forgotSub")}</p>
               </div>
 
               {error && (
-                <div className="mb-4 px-4 py-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
+                <div className="mb-4 px-4 py-3 rounded-xl bg-red-50 border border-red-200 text-red-600 text-sm">
                   {error}
                 </div>
               )}
 
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-white/60 mb-1.5">Email Address</label>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-1.5">
+                    {t("auth.email")}
+                  </label>
                   <input
                     type="email"
                     value={email}
@@ -94,25 +98,25 @@ export default function ForgotPasswordPage() {
                     placeholder="you@example.com"
                     required
                     autoComplete="email"
-                    className="w-full px-4 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder:text-white/30 focus:outline-none focus:border-gmg-gold-500 transition-colors"
+                    className="w-full px-4 py-3.5 rounded-xl bg-white border border-gray-200 text-gray-900 text-sm placeholder:text-gray-400 focus:outline-none focus:border-[#F5C400] transition-colors"
                   />
                 </div>
 
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full py-4 rounded-full bg-gmg-gold-500 text-black font-black text-sm uppercase tracking-wider hover:bg-gmg-gold-400 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+                  className="w-full py-4 rounded-xl btn-yellow text-sm uppercase tracking-wider font-black disabled:opacity-60 disabled:cursor-not-allowed"
                 >
-                  {isLoading ? "Sending..." : "Send Reset Link"}
+                  {isLoading ? t("auth.sending") : t("auth.sendLink")}
                 </button>
               </form>
 
               <Link
                 href="/auth/login"
-                className="flex items-center justify-center gap-2 mt-6 text-sm text-white/40 hover:text-gmg-gold-400 transition-colors font-semibold"
+                className="flex items-center justify-center gap-2 mt-6 text-sm text-gray-400 hover:text-gray-700 transition-colors font-semibold"
               >
-                <ArrowLeft className="w-4 h-4" />
-                Back to Login
+                <ArrowLeft className="w-4 h-4 rtl-flip" aria-hidden="true" />
+                {t("auth.backToLogin")}
               </Link>
             </>
           )}

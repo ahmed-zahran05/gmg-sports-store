@@ -1,117 +1,83 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { Instagram, Twitter, Youtube, Facebook } from "lucide-react";
-
-const footerLinks = {
-  Shop: [
-    { label: "All Products", href: "/products" },
-    { label: "Running", href: "/products?category=Running" },
-    { label: "Training", href: "/products?category=Training" },
-    { label: "Essentials", href: "/products?category=Essentials" },
-    { label: "New Arrivals", href: "/products?filter=new" },
-    { label: "Best Sellers", href: "/products?filter=bestsellers" },
-  ],
-  Support: [
-    { label: "Size Guide", href: "#" },
-    { label: "Shipping & Returns", href: "#" },
-    { label: "Track Order", href: "#" },
-    { label: "FAQ", href: "#" },
-    { label: "Contact Us", href: "#" },
-  ],
-  Company: [
-    { label: "About GMG", href: "#" },
-    { label: "Careers", href: "#" },
-    { label: "Press", href: "#" },
-    { label: "Privacy Policy", href: "#" },
-    { label: "Terms of Service", href: "#" },
-  ],
-};
-
-const socialLinks = [
-  { icon: Instagram, label: "Instagram", href: "#" },
-  { icon: Twitter, label: "Twitter", href: "#" },
-  { icon: Youtube, label: "YouTube", href: "#" },
-  { icon: Facebook, label: "Facebook", href: "#" },
-];
+import { useI18n } from "@/context/i18n-context";
 
 export function SiteFooter() {
+  const { t, lang } = useI18n();
+  const year = new Date().getFullYear();
+
+  const company = [
+    { label: t("footer.about"), href: "#" },
+    { label: t("footer.careers"), href: "#" },
+    { label: t("footer.press"), href: "#" },
+    { label: t("footer.blog"), href: "#" },
+  ];
+  const support = [
+    { label: t("footer.contact"), href: "#" },
+    { label: t("footer.faq"), href: "#" },
+    { label: t("footer.shipping"), href: "#" },
+    { label: t("footer.returns"), href: "#" },
+    { label: t("footer.sizeGuide"), href: "#" },
+  ];
+  const cats = [
+    { label: t("footer.running"), href: "/products?category=Running" },
+    { label: t("footer.training"), href: "/products?category=Training" },
+    { label: t("footer.football"), href: "/products" },
+    { label: t("footer.basketball"), href: "/products" },
+    { label: t("footer.lifestyle"), href: "/products" },
+  ];
+
   return (
-    <footer className="bg-black border-t border-gmg-gold-600/20">
-      {/* Main footer content */}
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid gap-12 lg:grid-cols-[1.5fr_1fr_1fr_1fr]">
-          {/* Brand column */}
-          <div className="space-y-6">
-            <Link href="/" className="flex items-center gap-3 group w-fit">
-              <div className="relative w-12 h-12">
-                <Image
-                  src="/gmg-logo.png"
-                  alt="GMG Sports"
-                  fill
-                  className="object-contain group-hover:scale-105 transition-transform"
-                />
+    <footer className="bg-gray-50 border-t border-gray-100">
+      <div className="container-site py-14">
+        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="space-y-4">
+            <Link href="/" className="flex items-center gap-2.5">
+              <div className="relative w-9 h-9">
+                <Image src="/gmg-logo.png" alt="GMG Sports" fill className="object-contain" />
               </div>
-              <div>
-                <p className="text-lg font-black tracking-widest text-white">GMG <span className="text-gmg-gold-500">SPORTS</span></p>
-                <p className="text-xs text-white/40 tracking-widest uppercase">Premium Athletic Apparel</p>
-              </div>
+              <span className="font-black text-gray-900 tracking-tight">
+                GMG <span className="text-[#F5C400]">SPORTS</span>
+              </span>
             </Link>
-            <p className="text-sm text-white/60 leading-relaxed max-w-xs">
-              Premium athletic apparel engineered for champions. Built for performance, designed for victory.
-            </p>
-            {/* Social links */}
-            <div className="flex gap-3">
-              {socialLinks.map(({ icon: Icon, label, href }) => (
-                <a
-                  key={label}
-                  href={href}
-                  aria-label={label}
-                  className="w-9 h-9 flex items-center justify-center rounded-full border border-white/10 text-white/50 hover:border-gmg-gold-500 hover:text-gmg-gold-500 transition-colors"
-                >
+            <p className="text-sm text-gray-500 leading-relaxed max-w-xs">{t("footer.tagline")}</p>
+            <div className="flex items-center gap-3">
+              {[
+                { icon: Instagram, href: "#", label: "Instagram" },
+                { icon: Twitter, href: "#", label: "Twitter" },
+                { icon: Youtube, href: "#", label: "YouTube" },
+                { icon: Facebook, href: "#", label: "Facebook" },
+              ].map(({ icon: Icon, href, label }) => (
+                <a key={label} href={href} aria-label={label} className="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-200 text-gray-500 hover:text-gray-900 hover:border-gray-400 transition-colors">
                   <Icon className="w-4 h-4" />
                 </a>
               ))}
             </div>
-            {/* Trust badges */}
-            <div className="flex flex-wrap gap-4 text-xs text-white/40">
-              <span className="flex items-center gap-1.5"><span className="text-gmg-gold-500">✓</span> Free Shipping $75+</span>
-              <span className="flex items-center gap-1.5"><span className="text-gmg-gold-500">✓</span> 30-Day Returns</span>
-              <span className="flex items-center gap-1.5"><span className="text-gmg-gold-500">✓</span> Secure Checkout</span>
-            </div>
           </div>
-
-          {/* Link columns */}
-          {Object.entries(footerLinks).map(([section, links]) => (
-            <div key={section}>
-              <p className="text-xs uppercase tracking-[0.3em] font-bold text-gmg-gold-500 mb-5">{section}</p>
-              <ul className="space-y-3">
-                {links.map(({ label, href }) => (
-                  <li key={label}>
-                    <Link href={href} className="text-sm text-white/50 hover:text-gmg-gold-400 transition-colors">
-                      {label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+          <div>
+            <h4 className="text-sm font-bold text-gray-900 uppercase tracking-wider mb-4">{t("footer.company")}</h4>
+            <ul className="space-y-3">{company.map((l) => (<li key={l.label}><Link href={l.href} className="text-sm text-gray-500 hover:text-gray-900 transition-colors">{l.label}</Link></li>))}</ul>
+          </div>
+          <div>
+            <h4 className="text-sm font-bold text-gray-900 uppercase tracking-wider mb-4">{t("footer.support")}</h4>
+            <ul className="space-y-3">{support.map((l) => (<li key={l.label}><Link href={l.href} className="text-sm text-gray-500 hover:text-gray-900 transition-colors">{l.label}</Link></li>))}</ul>
+          </div>
+          <div>
+            <h4 className="text-sm font-bold text-gray-900 uppercase tracking-wider mb-4">{t("footer.categories")}</h4>
+            <ul className="space-y-3">{cats.map((l) => (<li key={l.label}><Link href={l.href} className="text-sm text-gray-500 hover:text-gray-900 transition-colors">{l.label}</Link></li>))}</ul>
+          </div>
         </div>
       </div>
-
-      {/* Bottom bar */}
-      <div className="border-t border-white/5">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-white/30">
-            © {new Date().getFullYear()} GMG Sports. All rights reserved.
-          </p>
-          <div className="flex items-center gap-4 text-xs text-white/30">
-            <Link href="#" className="hover:text-gmg-gold-400 transition-colors">Privacy</Link>
-            <span>·</span>
-            <Link href="#" className="hover:text-gmg-gold-400 transition-colors">Terms</Link>
-            <span>·</span>
-            <Link href="#" className="hover:text-gmg-gold-400 transition-colors">Cookies</Link>
+      <div className="border-t border-gray-200">
+        <div className="container-site py-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-400">
+          <p>© {year} GMG Sports. {t("footer.rights")}</p>
+          <div className="flex items-center gap-4">
+            <Link href="#" className="hover:text-gray-600 transition-colors">{lang === "ar" ? "سياسة الخصوصية" : "Privacy Policy"}</Link>
+            <Link href="#" className="hover:text-gray-600 transition-colors">{lang === "ar" ? "شروط الخدمة" : "Terms of Service"}</Link>
           </div>
-          <p className="text-xs text-white/20">Built with Next.js &amp; Tailwind CSS</p>
         </div>
       </div>
     </footer>
